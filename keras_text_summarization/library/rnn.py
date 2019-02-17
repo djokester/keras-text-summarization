@@ -218,11 +218,11 @@ class RecursiveRNN1(object):
 
         inputs1 = Input(shape=(self.max_input_seq_length,))
         am1 = Embedding(self.num_input_tokens, 128)(inputs1)
-        am2 = LSTM(128)(am1)
+        am2 = Bidirectional(LSTM(128)(am1))
 
         inputs2 = Input(shape=(self.max_target_seq_length,))
         sm1 = Embedding(self.num_target_tokens, 128)(inputs2)
-        sm2 = LSTM(128)(sm1)
+        sm2 = Bidirectional(LSTM(128)(sm1))
 
         decoder1 = concatenate([am2, sm2])
         outputs = Dense(self.num_target_tokens, activation='softmax')(decoder1)
@@ -385,7 +385,6 @@ class RecursiveRNN1(object):
             else:
                 sum_input_seq = pad_sequences([wid_list], self.max_target_seq_length)
         return target_text.strip()
-
 
 class RecursiveRNN2(object):
     model_name = 'recursive-rnn-2'
